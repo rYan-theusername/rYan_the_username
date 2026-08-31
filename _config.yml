@@ -1,0 +1,29 @@
+title: Ryan
+description: Resume, book reviews, and CS180 projects.
+url: "https://rYan-theusername.github.io"
+baseurl: "/rYan_the_username"
+
+permalink: pretty
+markdown: kramdown
+
+collections:
+  reviews:
+    output: true
+    permalink: /reviews/:name/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+  - scope:
+      type: reviews
+    values:
+      layout: review
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - .github
