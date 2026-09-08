@@ -5,8 +5,14 @@ kind: "UC Berkeley DeCal"
 
 edstem:
   title: EdStem
-  description: Join for announcements, questions, and discussion. Click this link to join.
+  description: Join for announcements, questions, and discussion.
   url: https://edstem.org/us/join/asQaCv
+
+gradescope:
+  title: Gradescope
+  description: Quizzes and labs are submitted here. Course entry code
+  code: X8DZ4W
+  url: ""
 
 gradescope:
   title: Gradescope

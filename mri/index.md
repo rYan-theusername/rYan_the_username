@@ -68,32 +68,17 @@ I'd like to one day build a low-field scanner with some of my fellow students â€
   </div>
 </div>
 
-## Course links
+## Course resources
 
 <div class="projects">
-  {% if course.edstem.url and course.edstem.url != "" %}
-  <a class="project-card" href="{{ course.edstem.url }}" target="_blank" rel="noopener">
+  <div class="project-card is-static">
     <h2>{{ course.edstem.title }}</h2>
-    <p>{{ course.edstem.description }}</p>
-  </a>
-  {% else %}
-  <div class="project-card">
-    <h2>{{ course.edstem.title }}</h2>
-    <p><span class="soon">Coming soon.</span> {{ course.edstem.description }}</p>
+    <p>{{ course.edstem.description }} Click <a href="{{ course.edstem.url }}" target="_blank" rel="noopener">this link</a> to join.</p>
   </div>
-  {% endif %}
-
-  {% if course.gradescope.url and course.gradescope.url != "" %}
-  <a class="project-card" href="{{ course.gradescope.url }}" target="_blank" rel="noopener">
+  <div class="project-card is-static">
     <h2>{{ course.gradescope.title }}</h2>
-    <p>{{ course.gradescope.description }}{% if course.gradescope.code %}: {{ course.gradescope.code }}{% endif %}</p>
-  </a>
-  {% else %}
-  <div class="project-card">
-    <h2>{{ course.gradescope.title }}</h2>
-    <p>{% if course.gradescope.code %}{{ course.gradescope.description }}: <strong>{{ course.gradescope.code }}</strong>{% else %}<span class="soon">Coming soon.</span> {{ course.gradescope.description }}{% endif %}</p>
+    <p>{{ course.gradescope.description }}: <strong>{{ course.gradescope.code }}</strong></p>
   </div>
-  {% endif %}
 </div>
 
 ## Prerequisites
@@ -143,7 +128,7 @@ The class is P/NP. Earning at least 70% is a passing grade. Extra credit at my d
 
 **Late work.** Extensions will be granted with no penalty if you ask before the due date. I'll push the deadline for assignment n to align with assignment n + 1 upon request. Otherwise, no late assignments will be accepted.
 
-The schedule is, of course, tentative and subject to change.
+_The schedule is, of course, tentative and subject to change._
 
 ## Schedule
 
