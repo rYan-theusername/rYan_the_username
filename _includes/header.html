@@ -5,5 +5,6 @@
     <a href="{{ '/' | relative_url }}"{% if path == '/' or path == '/index.html' %} class="active" aria-current="page"{% endif %}>Home</a>
     <a href="{{ '/reviews/' | relative_url }}"{% if path == '/reviews/' or path contains '/reviews/' %} class="active" aria-current="page"{% endif %}>Reviews</a>
     <a href="{{ '/cs180/' | relative_url }}"{% if path == '/cs180/' or path contains '/cs180/' %} class="active" aria-current="page"{% endif %}>CS180</a>
+    <a href="{{ '/mri/' | relative_url }}"{% if path == '/mri/' or path contains '/mri/' %} class="active" aria-current="page"{% endif %}>MRI</a>
   </nav>
 </header>

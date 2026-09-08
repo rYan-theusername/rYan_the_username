@@ -1,0 +1,198 @@
+title: "Deconstructing MRI"
+subtitle: "The Anatomy of a Scanner"
+term: "Fall 2026"
+kind: "UC Berkeley DeCal"
+
+edstem:
+  title: EdStem
+  description: Join for announcements, questions, and discussion. Click this link to join.
+  url: https://edstem.org/us/join/asQaCv
+
+gradescope:
+  title: Gradescope
+  description: Quizzes and labs are submitted here. Course entry code
+  code: X8DZ4W
+  url: ""
+
+when: "Monday and Wednesday, 6:00–7:00"
+where: "Etcheverry 3109"
+office_hours: "Whenever / wherever — email us. Weekly hours TBD."
+
+instructors:
+  - name: Ryan
+    email: rblack06@berkeley.edu
+  - name: Vaughan
+    email: vaughanabakians@berkeley.edu
+  - name: Parsa
+    email: parsaansari@berkeley.edu
+
+hackathon_url: https://drive.google.com/file/d/1fqrEP6L0AnwPU13JtCsit0Xs_FymHefp/view?usp=share_link
+
+weeks:
+  - number: 0
+    dates: "Sep 7–11"
+    title: Introduction
+    topics:
+      - "A unique approach to imaging. History, hardware, and safety."
+      - "Bird’s-eye view of the MRI experiment (I). Scanner hardware and fields."
+    resources:
+      - title: Comprehensive history of MRI
+        url: https://www.magnetic-resonance.org/ch/20-01.html
+      - title: MR scanner hardware
+        url: https://larsonlab.github.io/MRI-education-resources/MRI%20System.html
+      - title: MR fields
+        url: https://larsonlab.github.io/MRI-education-resources/Magnetic%20Fields%20in%20MRI.html
+      - title: "Video: Introducing MRI — The Basics"
+        url: https://www.youtube.com/watch?v=35gfOtjRcic
+      - title: "Video: Introducing MRI — Review of Vectors"
+        url: https://www.youtube.com/watch?v=9s1T68n5PIg
+  - number: 1
+    dates: "Sep 14–18"
+    title: Math Review
+    topics:
+      - "Vectors, complex numbers, and frequencies."
+      - "The Fourier transform, now in 2D. What is k-space?"
+    resources:
+      - title: Math summary
+        url: https://drive.google.com/file/d/12_VBnj_FzUSdnR-jzlF_RXssBuy05n_5/view?usp=share_link
+      - title: Introducing the Fourier transform
+        url: https://betterexplained.com/articles/an-interactive-guide-to-the-fourier-transform/
+      - title: All about the 2DFT
+        url: https://drive.google.com/file/d/1BNZvVWC6zujUavx7eYdH6LxVYibmlPMt/view?usp=share_link
+      - title: "Video: But what is the Fourier Transform?"
+        url: https://www.youtube.com/watch?v=spUNpyF58BY
+      - title: "Video: But what is a Fourier series?"
+        url: https://www.youtube.com/watch?v=r6sGWTCMz2k
+  - number: 2
+    dates: "Sep 21–25"
+    title: "The Main Field B0"
+    topics:
+      - "Polarizing protons… and would ya look at that… they’re spinning!"
+      - "Breaking down the (bone-chilling) Bloch equation. T1 and T2 relaxation."
+    resources:
+      - title: What is spin?
+        url: https://mriquestions.com/what-is-spin.html
+      - title: Spin physics
+        url: https://larsonlab.github.io/MRI-education-resources/Spin%20Physics.html
+      - title: T1 relaxation
+        url: https://mriquestions.com/what-is-t1.html
+      - title: T2 relaxation
+        url: https://mriquestions.com/what-is-t2.html
+      - title: The Bloch equation
+        url: https://larsonlab.github.io/MRI-education-resources/Bloch%20Equation.html
+      - title: "Video: Introducing MRI — Introduction to NMR"
+        url: https://www.youtube.com/watch?v=ZDeIIPsnYJE
+      - title: "Video: Introducing MRI — Spin Angular Momentum and Precession"
+        url: https://www.youtube.com/watch?v=aCfbhfSx_mY
+  - number: 3
+    dates: "Sep 28–Oct 2"
+    title: "The RF Field B1"
+    topics:
+      - "Resonance and excitation in a rotating frame of reference."
+      - "Receiving and storing the MR signal. Pixels, matrices, and the signal equation."
+    resources:
+      - title: The rotating frame
+        url: https://mriquestions.com/rotating-frame.html
+      - title: Why is RF needed?
+        url: https://mriquestions.com/why-is-rf-input-needed.html
+      - title: Origin of the signal
+        url: https://mriquestions.com/origin-of-mr-signal.html
+      - title: Pixels and matrices
+        url: https://drive.google.com/file/d/1kVOZCxE2ll2ReMsYPInz6oXB7OpQK8Tp/view?usp=share_link
+      - title: The signal equation
+        url: https://larsonlab.github.io/MRI-education-resources/MRI%20Signal%20Equation.html
+  - number: 4
+    dates: "Oct 5–9"
+    title: "The Gradient Fields Gx Gy Gz"
+    topics:
+      - "Like a piano, position maps to frequency. Locating the signal."
+      - "Catch up and review. Frequency encoding and phase encoding."
+    resources:
+      - title: Locating the signal
+        url: https://mriquestions.com/how-to-locate-signals.html
+      - title: Spatial encoding
+        url: https://drive.google.com/file/d/1nzXSeAnYJrcYsOJF9WTK4SYpED_4rKdb/view?usp=share_link
+      - title: Frequency encoding
+        url: https://mriquestions.com/frequency-encoding.html
+      - title: Phase encoding
+        url: https://mriquestions.com/what-is-phase-encoding.html
+      - title: Phase and frequency encoding together
+        url: https://mriquestions.com/pe-and-fe-together.html
+  - number: 5
+    dates: "Oct 12–16"
+    title: Image Formation (I)
+    topics:
+      - "Navigating k-space with frequency and phase. Image formation."
+      - "Manipulating the hardware. Pulse sequences. Spin echo vs gradient echo."
+    resources:
+      - title: Spatial encoding
+        url: https://larsonlab.github.io/MRI-education-resources/Spatial%20Encoding.html
+      - title: K-space
+        url: https://larsonlab.github.io/MRI-education-resources/K-space.html
+      - title: Image formation
+        url: https://larsonlab.github.io/MRI-education-resources/Image%20Reconstruction.html
+      - title: Pulse sequences
+        url: https://larsonlab.github.io/MRI-education-resources/Pulse%20Sequence.html
+      - title: Spin echo vs gradient echo
+        url: https://larsonlab.github.io/MRI-education-resources/Gradient%20and%20Spin%20Echoes.html
+  - number: 6
+    dates: "Oct 19–23"
+    title: Image Formation (II)
+    topics:
+      - "Telling chalk from cheese. Basic contrast and the infamous T*2."
+      - "Spin echoes, FOV, and resolution."
+    resources:
+      - title: Basic contrast
+        url: https://larsonlab.github.io/MRI-education-resources/Basic%20Contrast%20Mechanisms.html
+      - title: In vivo contrast
+        url: https://larsonlab.github.io/MRI-education-resources/In%20Vivo%20Contrast%20Mechanisms.html
+      - title: Field of view
+        url: https://mriquestions.com/field-of-view-fov.html
+      - title: FOV and resolution
+        url: https://larsonlab.github.io/MRI-education-resources/FOV%20and%20Resolution.html
+  - number: 7
+    dates: "Oct 26–30"
+    title: Image Formation (III)
+    topics:
+      - "Artifacts, catch up, and review."
+      - "Game: name that artifact!"
+    resources:
+      - title: Common artifacts
+        url: https://larsonlab.github.io/MRI-education-resources/Artifacts.html
+  - number: 8
+    dates: "Nov 2–6"
+    title: Building a Low Field MR Scanner (I)
+    topics:
+      - "TBD"
+    resources: []
+  - number: 9
+    dates: "Nov 9–13"
+    title: Building a Low Field MR Scanner (II)
+    topics:
+      - "TBD"
+    resources: []
+  - number: 10
+    dates: "Nov 16–20"
+    title: Wrapping Up
+    topics:
+      - "Bird’s-eye view of the MRI experiment (II)."
+      - "Final presentations."
+    resources: []
+labs:
+  - title: Dry lab 1
+    url: ""
+  - title: Dry lab 2
+    url: ""
+  - title: Dry lab 3
+    url: ""
+  - title: Dry lab 4
+    url: ""
+  - title: Dry lab 5
+    url: ""
+  - title: Dry lab 6
+    url: ""
+  - title: Dry lab 7
+    url: ""
+  - title: Wet lab
+    note: "Program the 1.5T Aspect scanner in Cory Hall. Required to pass; scheduling will be flexible. You’ll leave with a picture of your wrist."
+    url: ""

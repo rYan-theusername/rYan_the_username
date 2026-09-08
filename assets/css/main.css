@@ -72,6 +72,31 @@ body {
   border-color: var(--ink);
 }
 
+.skip-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.85rem 0 1.4rem;
+}
+
+.skip-btns a {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--btn);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.22rem 0.62rem;
+}
+
+.skip-btns a:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
 h1 {
   margin: 0 0 0.35rem;
   font-size: 2.15rem;
@@ -87,6 +112,7 @@ h2 {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
+  scroll-margin-top: 1rem;
 }
 
 p {
@@ -98,6 +124,18 @@ img {
   height: auto;
   display: block;
   margin: 1rem 0;
+}
+
+.mri-gif-wrap {
+  margin: 1rem 0;
+}
+
+.mri-gif {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  border: 4px solid #4a3228;
 }
 
 .image-row {
@@ -292,6 +330,72 @@ a:hover {
 .project-card p {
   margin: 0;
   color: var(--muted);
+}
+
+.soon {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.week {
+  margin: 0 0 1.6rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.week:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.week-topics {
+  margin: 0.4rem 0 0.55rem;
+  padding-left: 1.2rem;
+}
+
+.week-topics li {
+  margin: 0.2rem 0;
+}
+
+.week-line {
+  margin: 0.2rem 0 0;
+  font-size: 0.98rem;
+}
+
+.week-label {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 0.35rem;
+}
+
+.lab-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lab-list li {
+  margin: 0;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.lab-list li:last-child {
+  border-bottom: 0;
+}
+
+.lab-list .soon {
+  margin-left: 0.45rem;
+}
+
+.lab-list .excerpt {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 @media (max-width: 540px) {
