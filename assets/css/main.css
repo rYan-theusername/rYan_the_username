@@ -11,6 +11,10 @@
   box-sizing: border-box;
 }
 
+figure {
+  margin: 0;
+}
+
 html {
   color-scheme: light;
 }
@@ -119,6 +123,47 @@ p {
   margin: 0.7rem 0;
 }
 
+blockquote {
+  margin: 1.4rem 0;
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  border-left: 2px solid var(--accent);
+}
+
+blockquote p {
+  font-style: italic;
+}
+
+.quote {
+  margin: 1.5rem 0 1.8rem;
+}
+
+.quote blockquote {
+  margin: 0;
+}
+
+.quote blockquote p:first-child {
+  margin-top: 0;
+}
+
+.quote blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.quote figcaption {
+  margin: 0.8rem 0 0 1.15rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.quote figcaption cite {
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -150,6 +195,143 @@ img {
   width: 100%;
   height: auto;
   margin: 0;
+}
+
+.image-row figure {
+  margin: 0;
+}
+
+.image-row figcaption,
+figure:not(.quote):not(.carousel) > figcaption {
+  margin: 0.55rem 0 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.carousel {
+  margin: 1.5rem 0 1.8rem;
+}
+
+.carousel:focus {
+  outline: none;
+}
+
+.carousel:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.carousel-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  scroll-snap-align: start;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: 1px solid var(--line);
+}
+
+.carousel-caption {
+  margin: 0.55rem 0 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.carousel-stats {
+  margin: 0.2rem 0 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.carousel-btn {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--btn);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.22rem 0.7rem;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.carousel-btn:hover {
+  border-color: var(--ink);
+}
+
+.carousel-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  max-width: 70%;
+}
+
+.carousel-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--btn);
+  cursor: pointer;
+}
+
+.carousel-dot[aria-current="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.carousel > figcaption {
+  margin: 0.85rem 0 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 main img {
@@ -193,6 +375,21 @@ a {
 
 a:hover {
   color: var(--ink);
+}
+
+mjx-container {
+  font-size: 1.02em;
+}
+
+mjx-container,
+mjx-container * {
+  box-sizing: content-box;
+}
+
+mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .item {
