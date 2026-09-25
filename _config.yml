@@ -5,6 +5,10 @@ baseurl: "/rYan_the_username"
 
 permalink: pretty
 markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  syntax_highlighter: rouge
 
 collections:
   reviews:
