@@ -15,7 +15,7 @@ What is a filter? Google says:
 
 In this part of the project I remove "unwanted parts" from images. A natural question is, "what can we easily *remove* from an image?" You could, of course, crop out some parts of the image and call *that* a filter. It is, but it is a *boring one*.
 
-The goal is to extract the *edges* from an image. In order to do this, we must discuss something called "convolution," a word which derives not from "convolute" but "convolve." I think of convolution as a sort of spatial "mixing" of the original image according to some rule. Consider the following rule: the pixel in position $(x, y)$ in the new image comes from position $(x-1, y)$ in the old image. We can conveniently describe this modification with a filter:
+Let's try to extract the *edges* from an image. In order to do this, we must discuss something called "convolution," a word which derives not from "convolute" but "convolve." I think of convolution as a sort of spatial "mixing" of the original image according to some rule. Consider the following rule: the pixel in position $(x, y)$ in the new image comes from position $(x-1, y)$ in the old image. We can conveniently describe this modification with a filter:
 
 $$
 \begin{bmatrix}
@@ -142,7 +142,7 @@ Check out the results of some convolutions computed with the following filters:
   </div>
 </figure>
 
-Notice that the dx and dy filters show edges in only one direction; we can emphasize edges in all directions by computing the gradient $\text{dx}^2 + \text{dy}^2$.
+Notice that the dx and dy filters show edges in only one direction; we can emphasize edges in _all_ directions by computing the gradient $\text{dx}^2 + \text{dy}^2$.
 
 <div class="grad-eq" role="img" aria-label="dx squared plus dy squared yields the gradient">
   <figure class="has-sq">
@@ -168,15 +168,15 @@ The gradient picks up "edges" in small "noisy" details, which isn't really what 
 <div class="image-row">
   <figure>
     <img src="{{ '/cs180/2/images/cameraman/grad_t10_cameraman.jpg' | relative_url }}" alt="Cameraman gradient thresholded at 10 percent">
-    <figcaption>10%</figcaption>
+    <figcaption>10% of max</figcaption>
   </figure>
   <figure>
     <img src="{{ '/cs180/2/images/cameraman/grad_t20_cameraman.jpg' | relative_url }}" alt="Cameraman gradient thresholded at 20 percent">
-    <figcaption>20%</figcaption>
+    <figcaption>20% of max</figcaption>
   </figure>
   <figure>
     <img src="{{ '/cs180/2/images/cameraman/grad_t50_cameraman.jpg' | relative_url }}" alt="Cameraman gradient thresholded at 50 percent">
-    <figcaption>50%</figcaption>
+    <figcaption>50% of max</figcaption>
   </figure>
 </div>
 
@@ -277,9 +277,9 @@ There is actually another strategy for edge detection, called the [Laplacian](ht
   </figure>
 </div>
 
-The results aren't quite as good as the gradient because pixels in noisy areas, i.e. grass, tend to be very different from the *local average*. The Laplacian likes *peaks* or *troughs* in pixel brightness, which is not exactly what we want from an edge detector; rather, we want to detect sharp change in one direction.
+The results aren't quite as good; the threshold actually removes some edges (see the cameraman's coat) we'd rather keep _before_ the textured grass. The results aren't quite as good as the gradient because pixels in "noisy" areas, i.e. grass, tend to be very different from the *local average*. The Laplacian likes *peaks* or *troughs* in pixel brightness, which is not exactly what we want from an edge detector; rather, we want to detect sharp change in one direction.
 
-Applying a blur is therefore *more important* for the laplacian; a blur effectively averages pixels which removes exactly the type of non-edge "noise" we don't want to see. Check out the results of applying a blurred Laplacian, like that pictured below, and then thresholding.
+Applying a blur is therefore *more important* for the laplacian; a blur effectively averages pixels which removes exactly the type of non-edge "noise" we don't want to see. Check out the results of applying a blurred Laplacian - I coin this filter the "LOG" - and then thresholding.
 
 <div class="grad-eq kernels" role="img" aria-label="laplacian convolved with a 21 by 21 gaussian yields a blurred laplacian">
   <figure>
@@ -293,19 +293,19 @@ Applying a blur is therefore *more important* for the laplacian; a blur effectiv
   </figure>
   <span class="op" aria-hidden="true">→</span>
   <figure>
-    <img src="{{ '/cs180/2/images/filters/laplacian_b_21.png' | relative_url }}" alt="Blurred laplacian filter, size 21">
-    <figcaption>blurred</figcaption>
+    <img src="{{ '/cs180/2/images/filters/laplacian_b_21.png' | relative_url }}" alt="Laplacian of gaussian filter, size 21">
+    <figcaption>LOG</figcaption>
   </figure>
 </div>
 
 <div class="image-row long-cap">
   <figure>
     <img src="{{ '/cs180/2/images/cameraman/laplace_t30_7_cameraman.jpg' | relative_url }}" alt="Cameraman laplacian from a 7 by 7 blur, thresholded at 30 percent">
-    <figcaption>7×7 blur kernel · 30% threshold</figcaption>
+    <figcaption>7×7 LOG · 30% threshold</figcaption>
   </figure>
   <figure>
     <img src="{{ '/cs180/2/images/cameraman/laplace_t30_21_cameraman.jpg' | relative_url }}" alt="Cameraman laplacian from a 21 by 21 blur, thresholded at 30 percent">
-    <figcaption>21×21 blur kernel · 30% threshold</figcaption>
+    <figcaption>21×21 LOG · 30% threshold</figcaption>
   </figure>
 </div>
 
@@ -561,7 +561,7 @@ Adding these, we get the following result frequency representation. Notice that 
 
 How can we blend images together? Simply cropping one image onto another won't look right. The solution is to use _Gaussian Stacks_ and _Laplacian Stacks_, which allow us to view and modify images at multiple scales.
 
-A Gaussian Stack is a sequence of subsequently lower-detail images, obtained by applying low pass filters with increasingly narrow cutoffs. A Laplacian stack takes the difference between the layers of the Gaussian Stack, yielding band-pass estimates of an image. Intuitively, each layer of the Laplacian Stack contains a different level of detail, and we can recover the original image by recombining these levels.
+A Gaussian Stack is a sequence of subsequently lower-detail images, obtained by applying low pass filters with increasingly narrow cutoffs. A Laplacian stack takes the difference between the layers of the Gaussian Stack, yielding band-pass frequency estimates of an image. Intuitively, each layer of the Laplacian Stack contains a different level of detail, and we can recover the original image by recombining these levels.
 
 I think the following animation explains this better than I could with words:
 
