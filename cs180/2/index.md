@@ -588,21 +588,6 @@ Check out the sequence of half-images below, and the blended counterpart. Notice
 
 <div class="image-row">
   <figure>
-    <img src="{{ '/cs180/2/images/oraple/level3_L.jpg' | relative_url }}" alt="Oraple level 3, left apple contribution">
-    <figcaption>Level 3 · Left</figcaption>
-  </figure>
-  <figure>
-    <img src="{{ '/cs180/2/images/oraple/level3_R.jpg' | relative_url }}" alt="Oraple level 3, right orange contribution">
-    <figcaption>Level 3 · Right</figcaption>
-  </figure>
-  <figure>
-    <img src="{{ '/cs180/2/images/oraple/level3_blended.jpg' | relative_url }}" alt="Oraple level 3, blended">
-    <figcaption>Level 3 · Blended</figcaption>
-  </figure>
-</div>
-
-<div class="image-row">
-  <figure>
     <img src="{{ '/cs180/2/images/oraple/level4_L.jpg' | relative_url }}" alt="Oraple level 4, left apple contribution">
     <figcaption>Level 4 · Left</figcaption>
   </figure>
@@ -618,16 +603,16 @@ Check out the sequence of half-images below, and the blended counterpart. Notice
 
 <div class="image-row">
   <figure>
-    <img src="{{ '/cs180/2/images/oraple/level5_L.jpg' | relative_url }}" alt="Oraple level 5, left apple contribution">
-    <figcaption>Level 5 · Left</figcaption>
+    <img src="{{ '/cs180/2/images/oraple/level6_L.jpg' | relative_url }}" alt="Oraple level 6, left apple contribution">
+    <figcaption>Level 6 · Left</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/cs180/2/images/oraple/level5_R.jpg' | relative_url }}" alt="Oraple level 5, right orange contribution">
-    <figcaption>Level 5 · Right</figcaption>
+    <img src="{{ '/cs180/2/images/oraple/level6_R.jpg' | relative_url }}" alt="Oraple level 6, right orange contribution">
+    <figcaption>Level 6 · Right</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/cs180/2/images/oraple/level5_blended.jpg' | relative_url }}" alt="Oraple level 5, blended">
-    <figcaption>Level 5 · Blended</figcaption>
+    <img src="{{ '/cs180/2/images/oraple/level6_blended.jpg' | relative_url }}" alt="Oraple level 6, blended">
+    <figcaption>Level 6 · Blended</figcaption>
   </figure>
 </div>
 
