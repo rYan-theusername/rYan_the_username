@@ -14,6 +14,11 @@
         var isFar = btn.getAttribute("data-hybrid-zoom") === "out";
         btn.setAttribute("aria-pressed", isFar === far ? "true" : "false");
       });
+      var caption = root.querySelector(".hybrid-result figcaption");
+      if (caption) {
+        var next = root.getAttribute(far ? "data-caption-out" : "data-caption-in");
+        if (next) caption.textContent = next;
+      }
     }
 
     root.querySelectorAll("[data-hybrid-zoom]").forEach(function (btn) {
