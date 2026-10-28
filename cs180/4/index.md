@@ -81,6 +81,18 @@ To reiterate: it's OK to rotate the camera, but you _cannot_ translate it, to en
   </figure>
 </div>
 
+##### Deer
+<div class="image-row cols-2">
+  <figure>
+    <img src="images/deer_left.jpg" alt="a deer resting in the woods, left image">
+    <figcaption>left</figcaption>
+  </figure>
+  <figure>
+    <img src="images/deer_right.jpg" alt="a deer resting in the woods, right image">
+    <figcaption>right</figcaption>
+  </figure>
+</div>
+
 ### Recovering Homographies
 
 A homography is a $3 \times 3$ matrix $H$ which maps a point $(x, y)$ in one image to a point $(x', y')$ in another. Why a $3 \times 3$ matrix to describe a transformation of $2\text{D}$ points? 
@@ -180,7 +192,7 @@ H =
 \end{bmatrix}.
 $$
 
-Sending the left points through $H$ lands them (on average) within about $1$ pixel of where I clicked in the right image. For the other scenes I clicked $25$ pairs of points each, and similarly set up a system of equations to be solved with least squares for a homography $H$.
+Sending the left points through $H$ lands them (on average) within about $1$ pixel of where I clicked in the right image. For the other scenes I clicked $25$ pairs of points each ($15$ for the deer), and similarly set up a system of equations to be solved with least squares for a homography $H$.
 
 ##### Playground and Courts
 <div class="image-row cols-2">
@@ -215,6 +227,18 @@ Sending the left points through $H$ lands them (on average) within about $1$ pix
   <figure>
     <img src="images/closet_pts_top.jpg" alt="my closet, top image with the matching 25 numbered correspondence points">
     <figcaption>top</figcaption>
+  </figure>
+</div>
+
+##### Deer
+<div class="image-row cols-2">
+  <figure>
+    <img src="images/deer_pts_left.jpg" alt="the deer scene, left image with 15 numbered correspondence points">
+    <figcaption>left</figcaption>
+  </figure>
+  <figure>
+    <img src="images/deer_pts_right.jpg" alt="the deer scene, right image with the matching 15 numbered correspondence points">
+    <figcaption>right</figcaption>
   </figure>
 </div>
 
@@ -343,4 +367,10 @@ Here are the results:
 ##### Closet
 <figure>
   <img src="images/closet_mosaic.jpg" alt="final mosaic of my closet">
+</figure>
+
+
+##### Deer
+<figure>
+  <img src="images/deer_mosaic.jpg" alt="final mosaic of the deer resting in the woods">
 </figure>
