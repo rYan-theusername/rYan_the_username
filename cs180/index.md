@@ -24,4 +24,8 @@ Course projects from CS180. Super duper fun class so far!
     <h2>Project 3</h2>
     <p>Fun with Diffusion Models.</p>
   </a>
+  <a class="project-card" href="{{ '/cs180/4/' | relative_url }}">
+    <h2>Project 4</h2>
+    <p>Image Warping and Mosaicing.</p>
+  </a>
 </div>
