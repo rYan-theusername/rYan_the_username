@@ -21,7 +21,7 @@ The black dot is the 'pinhole' or 'center of projection' through which all the l
 
 Assuming that the center of projection is the same in two images, you can use the fact that the rays coming from objects pictured in both images are identical, to compute something called a "homography." This transforms pixels in image red so that they "live" in the same coordinate system as image blue. In other words, you can _re-project_ the rays you captured in red onto the same image plane as that which blue was formed on.
 
-For example, you could reproject the orange light ray captured by the red image onto the blue image to *extend the field of view of the blue image!*
+For example, you could reproject the orange light ray captured by the red image onto the blue image's plane to *extend the field of view of the blue image!*
 
 To reiterate: it's OK to rotate the camera, but you _cannot_ translate it, to ensure that the rays of light appearing in both images are the same. Here are some sets of pictures I took, doing my best to hold my phone still while rotating around the camera's location.
 
@@ -95,9 +95,9 @@ To reiterate: it's OK to rotate the camera, but you _cannot_ translate it, to en
 
 ### Recovering Homographies
 
-A homography is a $3 \times 3$ matrix $H$ which maps a point $(x, y)$ in one image to a point $(x', y')$ in another. Why a $3 \times 3$ matrix to describe a transformation of $2\text{D}$ points? 
+A homography is a $3 \times 3$ matrix $H$ which maps a point $(x, y)$ in one image to a point $(x', y')$ in another. Why a $3 \times 3$ matrix to describe a $2\text{D}$ transformation? 
 
-Intuitively, a $2 \times 2$ matrix always sends $(0, 0)$ to $(0, 0)$, so it can rotate, scale, and shear, but it cannot *shift*. By using *homogeneous coordinates*, i.e. tacking a $1$ onto the end of each point to encode a point as a $3\text{D}$ vector, we can encode translation with $H$. The equation relating $(x, y)$ to $(x', y')$ is
+Intuitively, a $2 \times 2$ matrix always sends $(0, 0)$ to $(0, 0)$, so it can rotate and scale, but it cannot *shift*. By using *homogeneous coordinates*, i.e. tacking a $1$ onto the end of each point to encode a $2\text{D}$ point as a $3\text{D}$ vector, we can encode translation with $H$. The equation relating $(x, y)$ to $(x', y')$ is
 
 $$
 \begin{bmatrix} wx' \\ wy' \\ w \end{bmatrix}
@@ -192,8 +192,6 @@ H =
 \end{bmatrix}.
 $$
 
-Sending the left points through $H$ lands them (on average) within about $1$ pixel of where I clicked in the right image. For the other scenes I clicked $25$ pairs of points each ($15$ for the deer), and similarly set up a system of equations to be solved with least squares for a homography $H$.
-
 ##### Playground and Courts
 <div class="image-row cols-2">
   <figure>
@@ -248,7 +246,7 @@ We *could* use $H$ to *forward warp*: for each pixel in the source image, determ
 
 Instead we will do *backwards warping*. That is, we will instead iterate through the result pixels, filling them in by applying $H^{-1}$. This is still not an integer, though! Suppose output index $(x', y') = (16, 47)$ maps from input "pixel" $(41.3, 17.8)$. How do we fill in the result? I tried two approaches.
 
-**Nearest neighbor** interpolation just rounds; $(41.3, 17.8)$ becomes $(41, 18)$. This is fast and simple, but it could make edges look jagged.
+**Nearest neighbor** interpolation just rounds; $(41.3, 17.8)$ becomes $(41, 18)$. This is fast and simple, but it could make edges look bad.
 
 **Bilinear** interpolation computes a weighted average of the four closest pixels, giving more weight to the ones that are closer. This is a bit more robust because it incorporates information from more surrounding pixels.
 
@@ -373,4 +371,195 @@ Here are the results:
 ##### Deer
 <figure>
   <img src="images/deer_mosaic.jpg" alt="final mosaic of the deer resting in the woods">
+</figure>
+
+
+### Feature Matching for Autostitching
+
+Clicking pairs of points by hand is tedious and subject to human error. Hence we aim to automate the process by which corresponding points in the images are found, following roughly the methods of  ["Multi-Image Matching using Multi-Scale Oriented Patches"](https://www.microsoft.com/en-us/research/publication/multi-image-matching-using-multi-scale-oriented-patches/). This is the pipeline:
+1. detect corners in each image (feature detection),
+2. describe the little patch of image around each corner (feature extraction),
+3. match descriptors between the two images (feature matching),
+4. throw out bad matches with an algorithm called RANSAC, and
+5. use the resulting correspondences to compute a homography.
+
+#### (1) Detecting Corners
+
+Most of the correspondences I clicked were corners because they're easy to locate. This intuition guided the creation of something called a Harris Corner Detector, which analyzes the rate of change in pixel intensity to locate pixels which are rapidly changing in all directions (convince yourself that a corner is rapidly changing in all directions). Running a raw harris edge detctor yields a 'corner response' at every pixel which says roughly how 'corner-ey' that pixel is; I considered only the top $10{,}000$ pixels (to keep the computation time reasonable) which are local maxima (i.e. the pixels next door aren't better).
+
+The naive way to pick a top-$500$ set of pixels is to keep those with the strongest response. The problem is that strong corners like to clump together, which leaves the rest of the image empty. That's bad for matching, since we want points spread all over the overlap between two images. Consider a degenerate case where *all* of the strongest corners in image A are in a region that does *not* overlap with image B - there will clearly be no way to line these up!
+
+*Adaptive Non-Maximal Suppression* (ANMS) fixes this. For each candidate corner $i$, we compute a *suppression radius* (distance to the nearest *stronger* corner $j$),
+
+$$
+r_i = \min_j \lVert \mathbf{x}_i - \mathbf{x}_j \rVert \quad \text{such that} \quad f(\mathbf{x}_i) < c_{\text{robust}} \, f(\mathbf{x}_j).
+$$
+
+We choose $c_{\text{robust}} = 0.9$ so that the suppressing pixel must be significantly stronger than the supressed pixel. Then we keep $500$ corners with the largest $r_i$. This is equivalent to enforcing that every kept pixel is a maximum within a circle of radius $\geq r^\*$ centered at that pixel. We pick $r^\*$ so that precisely $500$ pixels are kept; smaller $r^\*$ will yield more than $500$ pixels but larger $r^\*$ will yield less; and this strategy ensures that every pixel is a *local maximum*.
+
+Here are some examples. The ANMS corners are clearly more evenly spread across space. This characteristic means that ANMS yields a better set of possible corresponding points for autostitching.
+
+##### Wallet
+<div class="image-row cols-2">
+  <figure>
+    <img src="images/wallet_harris_naive.png" alt="the wallet with the 500 strongest Harris corners overlaid in red">
+    <figcaption>strongest 500</figcaption>
+  </figure>
+  <figure>
+    <img src="images/wallet_harris_anms.png" alt="the wallet with 500 Harris corners chosen by ANMS overlaid in red">
+    <figcaption>ANMS</figcaption>
+  </figure>
+</div>
+
+##### Closet
+<div class="image-row cols-2">
+  <figure>
+    <img src="images/closet_harris_naive.png" alt="the closet with the 500 strongest Harris corners overlaid in red">
+    <figcaption>strongest 500</figcaption>
+  </figure>
+  <figure>
+    <img src="images/closet_harris_anms.png" alt="the closet with 500 Harris corners chosen by ANMS overlaid in red">
+    <figcaption>ANMS</figcaption>
+  </figure>
+</div>
+
+#### (2) Extracting Features
+
+In order to match the possible correspondences between images, we need more than just a pixel; we should also describe the image's local features around each pixel. To do so I took the $40 \times 40$ window centered on each pixel and downsampled it to an $8 \times 8$ patch to be used for feature matching. Each patch is *bias/ gain normalized* to account for shifts in brightness or contrast due to the camera's automatic exposure adjustment. Here are the $40 \times 40$ windows for a few features, and their $8 \times 8$ features descriptors:
+
+##### Wallet
+<figure>
+  <img src="images/wallet_patches.png" style="width: 100%;" alt="the wallet with four feature windows boxed and numbered">
+  <figcaption>40 x 40 windows</figcaption>
+</figure>
+
+<figure>
+  <img src="images/wallet_patches_zoom.png" alt="the four 8 by 8 descriptors extracted from the numbered wallet windows">
+  <figcaption>8 x 8 descriptors</figcaption>
+</figure>
+
+##### Closet
+<figure>
+  <img src="images/closet_patches.png" alt="the closet with eight feature windows boxed and numbered">
+  <figcaption>40 x 40 windows</figcaption>
+</figure>
+
+<figure>
+  <img src="images/closet_patches_zoom.png" alt="the eight 8 by 8 descriptors extracted from the numbered closet windows">
+  <figcaption>8 x 8 descriptors</figcaption>
+</figure>
+
+Notice that each extracted patch is a corner, edge, circle, or otherwise distinctive feature of the image. After doing this on two images, we in theory have the information necessary to match up the correspondences.
+
+#### (3) Matching Features
+
+After finding a set of distinct features in each of image A and B, we can stack each patch into a vector and run nearest-neighbors on these vectors to find close matches. That is, for each of the patch-vectors from image B, we will find the most similar patch out of all the patch-vectors from image A. We will determine the first *and second* nearest neighbors, and compare the ratio of their distances to determine if they are a "good" match. This works because if they are a true match (i.e. not just two patches that happen to be black-to-white edges in separate regions of the image), the second-best neighbor is generally be much worse than the first-best. This is pretty effective at getting good matches! However, notice patch 8, which does *not* represent a true correspondence even though their patches look very similar.
+
+##### Closet
+<div class="image-row cols-2">
+  <figure>
+    <img src="images/closet_matches_A.png" alt="the bottom closet image with eight matched features boxed and numbered">
+    <figcaption>image A</figcaption>
+  </figure>
+  <figure>
+    <img src="images/closet_matches_B.png" alt="the top closet image with the same eight matched features boxed and numbered">
+    <figcaption>image B</figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img src="images/closet_matches_zoom.png" alt="the eight matched pairs of 8 by 8 descriptors, image A on top and image B below">
+  <figcaption>matched descriptors (A on top, B below)</figcaption>
+</figure>
+
+### (4) RANSAC for Robust Homographies
+
+Since we use least squares to compute a homography, and this algorithm is very sensitive to outliers, we want to be very careful *not* to include any bad matches in the set of correspondences. RANdom SAmple Consensus is an algorithm used to throw out the bad apples.
+
+We'll do this by accepting as truth that there is *exactly one* true homography relating the two images. This is true assuming the camera was *rotated only*. Recall we only need four points to determine this. In RANSAC we pick at random four points, compute the corresponding homography $H$, and determine how well $H$ works for *all* of the points. We will call the homography that works for the most points $H^\*$. The points that are predicted well by $H^\*$ are called 'inliers' and those which are not are 'outliers.' Intuitively, we want $H^\*$ that yields the most inliers.
+
+Here are some examples of outliers. Notice that most are not true correspondences or live near the edges of the image (which are perhaps more susceptible to human error in keeping the camera's center of projection fixed as I rotated it, and to lens distortion, which is strongest away from the center of the frame). Yet, if you observe their local patches, they look quite similar. The RANSAC algorithm notices that these points, although they match, do not 'fit' the statistically-best true homography. 
+
+##### Closet
+<div class="image-row cols-2">
+  <figure>
+    <img src="images/closet_outliers_A.png" alt="the bottom closet image with ten outlier features boxed and numbered">
+    <figcaption>image A</figcaption>
+  </figure>
+  <figure>
+    <img src="images/closet_outliers_B.png" alt="the top closet image with the same ten outlier features boxed and numbered">
+    <figcaption>image B</figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img src="images/closet_outliers_zoom.png" alt="the ten outlier pairs of 8 by 8 descriptors, image 1 above image 2">
+  <figcaption>outlier image patches (each pair shows image A's patch above image B's)</figcaption>
+</figure>
+
+
+#### (5) Automatic Mosaics
+
+Here are some mosaics stitched from automatically computed points. These are generally *better* than those computed with manually clicked points; I think some of the seams are much less noticeable.
+
+##### Pantry
+<figure>
+  <img src="images/pantry_mosaic.jpg" alt="pantry mosaic from hand-clicked correspondences">
+  <figcaption>manual</figcaption>
+</figure>
+
+<figure>
+  <img src="images/pantry_auto_mosaic.jpg" alt="pantry mosaic from automatic correspondences">
+  <figcaption>automatic</figcaption>
+</figure>
+
+##### Closet
+<figure>
+  <img src="images/closet_mosaic.jpg" alt="closet mosaic from hand-clicked correspondences">
+  <figcaption>manual</figcaption>
+</figure>
+
+<figure>
+  <img src="images/closet_auto_mosaic.jpg" alt="closet mosaic from automatic correspondences">
+  <figcaption>automatic</figcaption>
+</figure>
+
+##### Deer
+<figure>
+  <img src="images/deer_mosaic.jpg" alt="deer mosaic from hand-clicked correspondences">
+  <figcaption>manual</figcaption>
+</figure>
+
+<figure>
+  <img src="images/deer_auto_mosaic.jpg" alt="deer mosaic from automatic correspondences">
+  <figcaption>automatic</figcaption>
+</figure>
+
+##### Playground and Courts
+<figure>
+  <img src="images/playground_mosaic.jpg" alt="playground and courts mosaic from hand-clicked correspondences">
+  <figcaption>manual</figcaption>
+</figure>
+
+<figure>
+  <img src="images/playground_auto_mosaic.jpg" alt="playground and courts mosaic from automatic correspondences">
+  <figcaption>automatic</figcaption>
+</figure>
+
+##### Playground and a Sandbox
+<figure>
+  <img src="images/groundplay_mosaic.jpg" alt="sandbox playground mosaic from hand-clicked correspondences">
+  <figcaption>manual</figcaption>
+</figure>
+
+<figure>
+  <img src="images/groundplay_auto_mosaic.jpg" alt="sandbox playground mosaic from automatic correspondences">
+  <figcaption>automatic</figcaption>
+</figure>
+
+##### Tree
+With this newly automated algorithm, I figured it would be worth trying a 5-image mosaic. That this was formed by many images is obvious from the difference in brightness, thanks to my phone's automatic exposure adjustment. Recall, this is why we compared correspondences by de-meaned feature patches, so the stitching still lines them up!
+<figure>
+  <img src="images/tree_auto_mosaic.jpg" alt="tall vertical mosaic of a tree between two buildings, stitched automatically from five photos">
+  <figcaption>automatic (five images)</figcaption>
 </figure>
